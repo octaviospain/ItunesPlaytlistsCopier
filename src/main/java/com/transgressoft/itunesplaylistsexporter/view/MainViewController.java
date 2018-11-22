@@ -130,18 +130,18 @@ public class MainViewController {
     }
 
     private void selectTargetDirectory(ActionEvent e) {
-        LOG.info("Choosing target directory");
+        LOG.debug("Choosing target directory");
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setTitle("Select target directory");
         targetDirectoryFile = chooser.showDialog(mainView.getView().getScene().getWindow());
         if (targetDirectoryFile != null) {
             targetPathLabel.setText(targetDirectoryFile.getAbsolutePath());
-            copyButton.setDisable(true);
+            copyButton.setDisable(false);
         }
     }
 
     private void chooseFile(ActionEvent e) {
-        LOG.info("Choosing Itunes xml file");
+        LOG.debug("Choosing Itunes xml file");
         FileChooser chooser = new FileChooser();
         chooser.setTitle("Select 'iTunes Music Library.xml' file");
         chooser.getExtensionFilters().add(new ExtensionFilter("xml files (*.xml)", "*.xml"));

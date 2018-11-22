@@ -88,7 +88,6 @@ public class ErrorDialogController implements ErrorDialog {
             okButton.getScene().getWindow().hide();
             reset();
         });
-        LOG.debug("SimpleErrorDialogController initialized {}", this);
     }
 
     private void handleSeeDetails(ActionEvent event) {

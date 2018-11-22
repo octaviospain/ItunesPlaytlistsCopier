@@ -25,7 +25,7 @@ import com.transgressoft.itunesplaylistsexporter.util.ItunesParserLogger;
 import com.transgressoft.itunesplaylistsexporter.view.*;
 import com.worldsworstsoftware.itunes.*;
 import com.worldsworstsoftware.itunes.parser.ItunesLibraryParser;
-import org.springframework.beans.factory.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 
@@ -36,7 +36,7 @@ import javax.xml.validation.*;
 import java.io.*;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author Octavio Calleya
@@ -49,9 +49,6 @@ public class ItunesService {
     @Autowired
     private ErrorDialogView errorDialogView;
 
-    @Value ("classpath:config/PropertyList-1.0.xsd")
-    private File itunesXsd;
-
     private ItunesLibrary itunesLibrary;
     private int playlistsAndTracksCount = 0;
     private int playlistsAndTracksTotal = 0;
@@ -63,7 +60,7 @@ public class ItunesService {
         try {
             Source xmlFile = new StreamSource(tunesLibraryXmlFile);
             SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            Schema schema = schemaFactory.newSchema(getClass().getResource(itunesXsd.getAbsolutePath()));
+            Schema schema = schemaFactory.newSchema(getClass().getResource("/config/PropertyList-1.0.xsd"));
             Validator validator = schema.newValidator();
             validator.validate(xmlFile);
             isValid = true;
@@ -110,15 +107,10 @@ public class ItunesService {
     public void copyItunesPlaylists(File targetDirectoryFile, List<ItunesPlaylist> itunesPlaylists) {
         errors.clear();
         itunesPlaylists.forEach(itunesPlaylist -> {
-            try {
-                List<ItunesTrack> itunesTracks = getItunesTracks(itunesPlaylist);
-                Path playlistFolderFile = targetDirectoryFile.toPath().resolve(itunesPlaylist.getName());
-                if (playlistFolderFile.toFile().createNewFile())
-                    copyTracks(targetDirectoryFile, itunesTracks);
-            }
-            catch (IOException exception) {
-                errors.add("[" + itunesPlaylist.getName() + "]:" + exception.getMessage());
-            }
+            List<ItunesTrack> itunesTracks = getItunesTracks(itunesPlaylist);
+            Path playlistFolderFile = targetDirectoryFile.toPath().resolve(itunesPlaylist.getName());
+            if (playlistFolderFile.toFile().mkdir())
+                copyTracks(targetDirectoryFile, itunesTracks);
 
             mainView.updateProgress(1.0 * playlistsAndTracksCount++ / playlistsAndTracksTotal);
         });

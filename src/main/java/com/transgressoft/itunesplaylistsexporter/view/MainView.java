@@ -36,6 +36,6 @@ public class MainView extends AbstractFxmlView {
     }
 
     public void setItunesPlaylists(List<ItunesPlaylist> itunesPlaylists) {
-        ((MainViewController) getPresenter()).setItunesPlaylists(itunesPlaylists);
+        Platform.runLater(() -> ((MainViewController) getPresenter()).setItunesPlaylists(itunesPlaylists));
     }
 }
