@@ -1,0 +1,6 @@
+javafx:
+  title: Itunes Playlists Copier
+
+spring:
+  main:
+    banner-mode: "off"
