@@ -9,3 +9,13 @@
     -fx-background-insets: 7 1 2 7;
     -fx-background-radius: 10;
 }
+
+#showLogToggleButton {
+    -fx-graphic: url('../icons/double-arrow-down.png');
+    -fx-background-color: transparent;
+}
+
+#showLogToggleButton:selected {
+    -fx-graphic: url('../icons/double-arrow-up.png');
+    -fx-background-color: transparent;
+}

@@ -27,6 +27,7 @@ import javafx.collections.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.*;
 import javafx.stage.FileChooser.ExtensionFilter;
 import org.slf4j.*;
@@ -74,6 +75,14 @@ public class MainViewController {
     @FXML
     private Button removeAllButton;
     @FXML
+    private BorderPane bottomSectionBorderPane;
+    @FXML
+    private ToggleButton showLogToggleButton;
+    @FXML
+    private Hyperlink showLogHyperlink;
+    @FXML
+    private TextArea logTextArea;
+    @FXML
     private Button closeButton;
 
     private File targetDirectoryFile;
@@ -93,14 +102,17 @@ public class MainViewController {
         selectTargetDirectoryButton.setOnAction(this::selectTargetDirectory);
         copyButton.setOnAction(e -> {
             if (copyButton.getText().equals("Copy")) {
-                itunesService.copyItunesPlaylists(targetDirectoryFile, targetPlaylists.getItems());
+                itunesService.copyItunesPlaylists(targetPlaylists.getItems(), targetDirectoryFile);
                 copyButton.setText("Cancel");
-            }
-            else {
+            } else {
                 itunesService.cancelImport();
                 copyButton.setText("Copy");
             }
         });
+
+        bottomSectionBorderPane.getChildren().remove(logTextArea);
+        showLogToggleButton.setOnAction(this::handleShowLog);
+        showLogHyperlink.setOnAction(this::handleShowLog);
     }
 
     private void moveSelected(ListView<ItunesPlaylist> from, ListView<ItunesPlaylist> to) {
@@ -121,8 +133,7 @@ public class MainViewController {
             targetPlaylists.getItems().add(playlist);
             sourcePlaylists.getItems().remove(playlist);
             FXCollections.sort(targetPlaylists.getItems(), Comparator.comparing(ItunesPlaylist::getName));
-        }
-        else if (targetPlaylists.getItems().contains(playlist)) {
+        } else if (targetPlaylists.getItems().contains(playlist)) {
             sourcePlaylists.getItems().add(playlist);
             targetPlaylists.getItems().remove(playlist);
             FXCollections.sort(sourcePlaylists.getItems(), Comparator.comparing(ItunesPlaylist::getName));
@@ -146,16 +157,35 @@ public class MainViewController {
         chooser.setTitle("Select 'iTunes Music Library.xml' file");
         chooser.getExtensionFilters().add(new ExtensionFilter("xml files (*.xml)", "*.xml"));
         File itunesLibraryXmlFile = chooser.showOpenDialog(mainView.getView().getScene().getWindow());
-        if (itunesLibraryXmlFile != null && itunesService.isValidItunesFile(itunesLibraryXmlFile)) {
+        if (itunesLibraryXmlFile != null && itunesService.isValidItunesLibraryXmlFile(itunesLibraryXmlFile)) {
             filePathLabel.setText(itunesLibraryXmlFile.getAbsolutePath());
             selectTargetDirectoryButton.setDisable(false);
-            itunesService.importItunesPlaylists(itunesLibraryXmlFile);
+            itunesService.importItunesLibrary(itunesLibraryXmlFile);
             progressBar.setProgress(- 1);
         }
     }
 
+    private void handleShowLog(ActionEvent event) {
+        bottomSectionBorderPane.getChildren().remove(logTextArea);
+        if (! bottomSectionBorderPane.getChildren().contains(logTextArea)) {
+            bottomSectionBorderPane.setCenter(logTextArea);
+            showLogToggleButton.setSelected(false);
+            LOG.debug("Toggled log area");
+        } else {
+            bottomSectionBorderPane.getChildren().remove(logTextArea);
+            showLogToggleButton.setSelected(true);
+            LOG.debug("Hided log area");
+        }
+        mainView.getView().getScene().getWindow().sizeToScene();
+    }
+
     public void updateProgress(double progress) {
         progressBar.setProgress(progress);
+    }
+
+    public void log(String message) {
+        LOG.info(message);
+        logTextArea.appendText(message);
     }
 
     public void setItunesPlaylists(List<ItunesPlaylist> itunesPlaylists) {
