@@ -26,7 +26,6 @@ import com.worldsworstsoftware.itunes.parser.ItunesLibraryParser;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
 
 import javax.xml.XMLConstants;
 import javax.xml.transform.Source;
@@ -104,15 +103,19 @@ public class ItunesService {
 
         int totalTracks = trackPathsByPlaylistName.values().stream().mapToInt(List::size).sum();
 
-        trackPathsByPlaylistName.forEach((playlistName, itunesFilePaths) -> {
-
+        int count = 0;
+        for (Map.Entry<String, List<Path>> entry : trackPathsByPlaylistName.entrySet()) {
+            String playlistName = entry.getKey();
+            List<Path> itunesFilePaths = entry.getValue();
             Path playlistPath = targetDestination.toPath().resolve(playlistName);
-            if (! playlistPath.toFile().mkdir())
+            if (! playlistPath.toFile().mkdir()) {
+                count += entry.getValue().size();
                 mainView.log("Unable to create directory " + playlistPath.toString());
+            }
             else
-                copyItunesTracks(itunesFilePaths, playlistPath, totalTracks);
+                count = copyItunesTracks(itunesFilePaths, playlistPath, count, totalTracks);
 
-        });
+        }
     }
 
     private Map<String, List<Path>> trackPathsByPlaylistName(List<ItunesPlaylist> playlists) {
@@ -120,26 +123,25 @@ public class ItunesService {
                 .collect(Collectors.toMap(ItunesPlaylist::getName, this::itunesFilePaths));
     }
 
-    private void copyItunesTracks(List<Path> filePaths, Path targetDirectory, int totalTracks) {
+    private int copyItunesTracks(List<Path> filePaths, Path targetDirectory, int tracksCount, int totalTracks) {
+        int count = tracksCount;
         for (int i = 0; i < filePaths.size(); i++) {
             Path path = filePaths.get(i);
             try {
                 String ensuredFileName = ensuredFileNameOnPath(targetDirectory, path.toFile().getName());
                 Files.copy(path, targetDirectory.resolve(ensuredFileName), COPY_ATTRIBUTES);
+                LOG.info("File copied: {}", path);
+                mainView.log("File copied: " + path.toFile().getName());
+
             }
             catch (IOException exception) {
-                LOG.info("Error copying file {}: {}", path, exception.getMessage());
-                mainView.log("Error copying file " + path.toFile().getName() + ": " + "Error copying file to " + path + ": " + exception.getMessage());
-                Throwable cause = exception.getCause();
-                if (cause != null) {
-                    StringWriter stringWriter = new StringWriter();
-                    cause.printStackTrace(new PrintWriter(stringWriter));
-                    mainView.log(stringWriter.toString());
-                }
+                LOG.info("Error copying file {}", path.toFile().getName());
+                mainView.log("Error copying file " + path.toFile().getName());
             }
 
-            mainView.updateProgress((1.0 * i / filePaths.size()) / totalTracks);
+            mainView.updateProgress((1.0 * count++) / totalTracks);
         }
+        return count;
     }
 
     /**
@@ -151,7 +153,7 @@ public class ItunesService {
      *
      * @return The modified string
      */
-    public String ensuredFileNameOnPath(Path targetPath, String fileName) {
+    private String ensuredFileNameOnPath(Path targetPath, String fileName) {
         String newName = fileName;
         if (targetPath.resolve(fileName).toFile().exists()) {
             int pos = fileName.lastIndexOf('.');
