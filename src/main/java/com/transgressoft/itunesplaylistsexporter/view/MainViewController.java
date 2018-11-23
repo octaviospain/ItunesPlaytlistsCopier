@@ -97,6 +97,12 @@ public class MainViewController {
         sourcePlaylists.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         targetPlaylists.setCellFactory(cell -> new ItunesPlaylistListCell(this));
         targetPlaylists.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        targetPlaylists.itemsProperty().addListener((obs, oldItems, newItems) -> {
+            if (newItems.isEmpty())
+                copyButton.setDisable(true);
+            else
+                copyButton.setDisable(false);
+        });
         closeButton.setOnAction(e -> mainView.hide());
         chooseFileButton.setOnAction(this::chooseFile);
         selectTargetDirectoryButton.setOnAction(this::selectTargetDirectory);
@@ -183,7 +189,6 @@ public class MainViewController {
     }
 
     public void log(String message) {
-        LOG.info(message);
         logTextArea.appendText(message);
     }
 

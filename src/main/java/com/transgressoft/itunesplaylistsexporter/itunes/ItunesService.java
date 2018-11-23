@@ -23,6 +23,7 @@ import com.transgressoft.itunesplaylistsexporter.util.ItunesParserLogger;
 import com.transgressoft.itunesplaylistsexporter.view.*;
 import com.worldsworstsoftware.itunes.*;
 import com.worldsworstsoftware.itunes.parser.ItunesLibraryParser;
+import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
@@ -42,6 +43,8 @@ import java.util.stream.Collectors;
  */
 @Service
 public class ItunesService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ItunesService.class);
 
     @Autowired
     private MainView mainView;
@@ -120,10 +123,11 @@ public class ItunesService {
             try {
                 FileCopyUtils.copy(path.toFile(), targetDirectory.toFile());
             }
-            catch (IOException message) {
-                mainView.log("Error copying file " + path + ": " + message.getMessage());
+            catch (IOException exception) {
+                LOG.info("Error copying file {}: {}", path, exception.getCause().getMessage());
+                mainView.log("Error copying file " + path + ": " + "Error copying file " + path + ": " + exception.getMessage());
                 StringWriter stringWriter = new StringWriter();
-                message.getCause().printStackTrace(new PrintWriter(stringWriter));
+                exception.getCause().printStackTrace(new PrintWriter(stringWriter));
                 mainView.log(stringWriter.toString());
             }
 
