@@ -17,7 +17,7 @@
   <center>
     <HBox alignment="CENTER" prefHeight="250.0" BorderPane.alignment="CENTER">
       <BorderPane.margin>
-        <Insets left="20.0" right="20.0" top="10.0" />
+        <Insets left="20.0" right="20.0" />
       </BorderPane.margin>
       <children>
         <VBox alignment="CENTER" HBox.hgrow="SOMETIMES">

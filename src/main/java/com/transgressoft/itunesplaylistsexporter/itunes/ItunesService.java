@@ -124,7 +124,7 @@ public class ItunesService {
                 FileCopyUtils.copy(path.toFile(), targetDirectory.toFile());
             }
             catch (IOException exception) {
-                LOG.info("Error copying file {}: {}", path, exception.getCause().getMessage());
+                LOG.info("Error copying file {}: {}", path, exception.getCause());
                 mainView.log("Error copying file " + path + ": " + "Error copying file " + path + ": " + exception.getMessage());
                 StringWriter stringWriter = new StringWriter();
                 exception.getCause().printStackTrace(new PrintWriter(stringWriter));
