@@ -17,29 +17,19 @@
  * Copyright (C) 2018 Octavio Calleya
  */
 
-package com.transgressoft.itunesplaylistsexporter.view;
+package com.transgressoft.itunesplaylistscopier;
 
-import com.worldsworstsoftware.itunes.ItunesPlaylist;
-import de.felixroske.jfxsupport.*;
-import javafx.application.Platform;
-
-import java.util.List;
+import com.transgressoft.itunesplaylistscopier.view.MainView;
+import de.felixroske.jfxsupport.AbstractJavaFxApplicationSupport;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @author Octavio Calleya
  */
-@FXMLView(value = "/view/MainView.fxml", title = "Itunes Playlists Copier", stageStyle = "DECORATED")
-public class MainView extends AbstractFxmlView {
+@SpringBootApplication
+public class ItunesPlaylistsCopierApplication extends AbstractJavaFxApplicationSupport {
 
-    public void updateProgress(double progress) {
-        Platform.runLater(() -> ((MainViewController) getPresenter()).updateProgress(progress));
-    }
-
-    public void log(String message) {
-        ((MainViewController) getPresenter()).log(message);
-    }
-
-    public void setItunesPlaylists(List<ItunesPlaylist> itunesPlaylists) {
-        Platform.runLater(() -> ((MainViewController) getPresenter()).setItunesPlaylists(itunesPlaylists));
+    public static void main(String[] args) {
+        launch(ItunesPlaylistsCopierApplication.class, MainView.class, null, args);
     }
 }

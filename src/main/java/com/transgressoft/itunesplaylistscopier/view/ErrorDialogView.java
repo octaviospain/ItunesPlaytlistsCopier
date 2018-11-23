@@ -17,7 +17,7 @@
  * Copyright (C) 2018 Octavio Calleya
  */
 
-package com.transgressoft.itunesplaylistsexporter.view;
+package com.transgressoft.itunesplaylistscopier.view;
 
 import com.transgressoft.commons.view.*;
 import de.felixroske.jfxsupport.*;

@@ -17,10 +17,10 @@
  * Copyright (C) 2018 Octavio Calleya
  */
 
-package com.transgressoft.itunesplaylistsexporter.view;
+package com.transgressoft.itunesplaylistscopier.view;
 
-import com.transgressoft.itunesplaylistsexporter.itunes.ItunesService;
-import com.transgressoft.itunesplaylistsexporter.view.custom.ItunesPlaylistListCell;
+import com.transgressoft.itunesplaylistscopier.itunes.ItunesService;
+import com.transgressoft.itunesplaylistscopier.view.custom.ItunesPlaylistListCell;
 import com.worldsworstsoftware.itunes.ItunesPlaylist;
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.collections.*;

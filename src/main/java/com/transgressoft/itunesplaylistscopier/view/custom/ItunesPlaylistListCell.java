@@ -17,10 +17,10 @@
  * Copyright (C) 2018 Octavio Calleya
  */
 
-package com.transgressoft.itunesplaylistsexporter.view.custom;
+package com.transgressoft.itunesplaylistscopier.view.custom;
 
 import com.transgressoft.commons.util.ByteSizeRepresentation;
-import com.transgressoft.itunesplaylistsexporter.view.*;
+import com.transgressoft.itunesplaylistscopier.view.*;
 import com.worldsworstsoftware.itunes.ItunesPlaylist;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;

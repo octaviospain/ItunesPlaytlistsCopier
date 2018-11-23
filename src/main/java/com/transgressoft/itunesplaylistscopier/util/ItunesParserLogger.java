@@ -17,7 +17,7 @@
  * Copyright (C) 2018 Octavio Calleya
  */
 
-package com.transgressoft.itunesplaylistsexporter.util;
+package com.transgressoft.itunesplaylistscopier.util;
 
 import com.worldsworstsoftware.itunes.parser.logging.*;
 import com.worldsworstsoftware.logging.*;
