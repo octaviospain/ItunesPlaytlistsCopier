@@ -166,7 +166,6 @@ public class MainViewController {
     }
 
     private void handleShowLog(ActionEvent event) {
-        bottomSectionBorderPane.getChildren().remove(logTextArea);
         if (! bottomSectionBorderPane.getChildren().contains(logTextArea)) {
             bottomSectionBorderPane.setCenter(logTextArea);
             showLogToggleButton.setSelected(false);
