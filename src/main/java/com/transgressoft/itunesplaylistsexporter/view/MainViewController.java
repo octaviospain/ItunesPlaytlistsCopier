@@ -174,11 +174,11 @@ public class MainViewController {
     private void handleShowLog(ActionEvent event) {
         if (! bottomSectionBorderPane.getChildren().contains(logTextArea)) {
             bottomSectionBorderPane.setCenter(logTextArea);
-            showLogToggleButton.setSelected(false);
+            showLogToggleButton.setSelected(true);
             LOG.debug("Toggled log area");
         } else {
             bottomSectionBorderPane.getChildren().remove(logTextArea);
-            showLogToggleButton.setSelected(true);
+            showLogToggleButton.setSelected(false);
             LOG.debug("Hided log area");
         }
         mainView.getView().getScene().getWindow().sizeToScene();

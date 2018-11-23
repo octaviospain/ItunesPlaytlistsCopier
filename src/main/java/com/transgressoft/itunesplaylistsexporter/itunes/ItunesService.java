@@ -38,8 +38,6 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-import static jdk.nashorn.internal.objects.NativeError.printStackTrace;
-
 /**
  * @author Octavio Calleya
  */

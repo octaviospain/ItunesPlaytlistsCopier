@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="rootBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-            minWidth="-Infinity" stylesheets="@../css/main-view.css" xmlns="http://javafx.com/javafx/10.0.1"
-            fx:controller="com.transgressoft.itunesplaylistsexporter.view.MainViewController">
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="rootBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../css/main-view.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.transgressoft.itunesplaylistsexporter.view.MainViewController">
   <center>
-    <HBox alignment="CENTER" BorderPane.alignment="CENTER">
+    <HBox alignment="CENTER" prefHeight="250.0" BorderPane.alignment="CENTER">
       <BorderPane.margin>
         <Insets left="20.0" right="20.0" />
       </BorderPane.margin>
@@ -64,26 +72,25 @@
                   <children>
                       <ToggleButton fx:id="showLogToggleButton" mnemonicParsing="false">
                           <HBox.margin>
-                              <Insets left="-7.0"/>
+                              <Insets left="-7.0" />
                           </HBox.margin>
                       </ToggleButton>
-                      <Hyperlink fx:id="showLogHyperlink" text="Show log"/>
+                      <Hyperlink fx:id="showLogHyperlink" text="Show log" />
                   </children>
                   <BorderPane.margin>
-                      <Insets bottom="10.0"/>
+                      <Insets bottom="10.0" />
                   </BorderPane.margin>
               </HBox>
           </top>
           <center>
-              <TextArea fx:id="logTextArea" BorderPane.alignment="CENTER">
+              <TextArea fx:id="logTextArea" prefHeight="120.0" BorderPane.alignment="CENTER">
                   <BorderPane.margin>
-                      <Insets bottom="20.0"/>
+                      <Insets bottom="20.0" />
                   </BorderPane.margin>
               </TextArea>
           </center>
           <bottom>
-              <Button fx:id="closeButton" cancelButton="true" mnemonicParsing="false" prefWidth="100.0" text="Close"
-                      BorderPane.alignment="CENTER_RIGHT"/>
+              <Button fx:id="closeButton" cancelButton="true" mnemonicParsing="false" prefWidth="100.0" text="Close" BorderPane.alignment="CENTER_RIGHT" />
           </bottom>
       </BorderPane>
   </bottom>
@@ -97,7 +104,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT">
                      <children>
-                         <Button fx:id="chooseFileButton" mnemonicParsing="false" prefWidth="155.0" text="Select Itunes Library"/>
+                         <Button fx:id="chooseFileButton" mnemonicParsing="false" prefWidth="155.0" text="Select Itunes Library" />
                         <Label fx:id="filePathLabel" HBox.hgrow="SOMETIMES">
                            <HBox.margin>
                               <Insets left="20.0" />
@@ -110,8 +117,7 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT">
                      <children>
-                         <Button fx:id="selectTargetDirectoryButton" disable="true" mnemonicParsing="false" prefWidth="155.0"
-                                 text="Select destination"/>
+                         <Button fx:id="selectTargetDirectoryButton" disable="true" mnemonicParsing="false" prefWidth="155.0" text="Select destination" />
                         <Label fx:id="targetPathLabel" HBox.hgrow="SOMETIMES">
                            <HBox.margin>
                               <Insets left="20.0" />
@@ -120,6 +126,9 @@
                      </children>
                   </HBox>
                </children>
+               <BorderPane.margin>
+                  <Insets bottom="10.0" />
+               </BorderPane.margin>
             </VBox>
          </top>
          <center>
@@ -131,9 +140,7 @@
                   <Insets top="10.0" />
                </BorderPane.margin>
                  <children>
-                     <ProgressBar fx:id="progressBar" prefHeight="20.0" prefWidth="630.0" stylesheets="@../css/main-view.css"
-                                  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                  AnchorPane.topAnchor="0.0"/>
+                     <ProgressBar fx:id="progressBar" prefHeight="20.0" prefWidth="630.0" stylesheets="@../css/main-view.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                  </children>
              </AnchorPane>
          </bottom>
