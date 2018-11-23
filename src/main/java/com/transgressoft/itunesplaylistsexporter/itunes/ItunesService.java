@@ -33,10 +33,13 @@ import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.*;
 import java.io.*;
+import java.net.URI;
 import java.nio.file.*;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
+
+import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
 
 /**
  * @author Octavio Calleya
@@ -121,11 +124,12 @@ public class ItunesService {
         for (int i = 0; i < filePaths.size(); i++) {
             Path path = filePaths.get(i);
             try {
-                Files.copy(path, targetDirectory);
+                String ensuredFileName = ensuredFileNameOnPath(targetDirectory, path.toFile().getName());
+                Files.copy(path, targetDirectory.resolve(ensuredFileName), COPY_ATTRIBUTES);
             }
             catch (IOException exception) {
                 LOG.info("Error copying file {}: {}", path, exception.getMessage());
-                mainView.log("Error copying file " + path + ": " + "Error copying file " + path + ": " + exception.getMessage());
+                mainView.log("Error copying file " + path.toFile().getName() + ": " + "Error copying file to " + path + ": " + exception.getMessage());
                 Throwable cause = exception.getCause();
                 if (cause != null) {
                     StringWriter stringWriter = new StringWriter();
@@ -138,11 +142,35 @@ public class ItunesService {
         }
     }
 
+    /**
+     * Ensures that the file name given is unique in the target directory, appending
+     * (1), (2)... (n+1) to the file name in case it already exists
+     *
+     * @param fileName   The string of the file name
+     * @param targetPath The path to check if there is a file with the name equals <tt>fileName</tt>
+     *
+     * @return The modified string
+     */
+    public String ensuredFileNameOnPath(Path targetPath, String fileName) {
+        String newName = fileName;
+        if (targetPath.resolve(fileName).toFile().exists()) {
+            int pos = fileName.lastIndexOf('.');
+            newName = fileName.substring(0, pos) + "(1)." + fileName.substring(pos + 1);
+        }
+        while (targetPath.resolve(newName).toFile().exists()) {
+            int posL = newName.lastIndexOf('(');
+            int posR = newName.lastIndexOf(')');
+            int num = Integer.parseInt(newName.substring(posL + 1, posR));
+            newName = newName.substring(0, posL + 1) + ++ num + newName.substring(posR);
+        }
+        return newName;
+    }
+
     private List<Path> itunesFilePaths(ItunesPlaylist itunesPlaylist) {
         return ((List<Integer>) itunesPlaylist.getTrackIDs()).stream()
                 .map(itunesLibrary::getTrackById)
                 .filter(this::isValidItunesTrack)
-                .map(track -> Paths.get(track.getLocation()))
+                .map(track -> Paths.get(URI.create(track.getLocation())))
                 .collect(Collectors.toList());
     }
 
