@@ -38,6 +38,8 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
+import static jdk.nashorn.internal.objects.NativeError.printStackTrace;
+
 /**
  * @author Octavio Calleya
  */
@@ -121,14 +123,17 @@ public class ItunesService {
         for (int i = 0; i < filePaths.size(); i++) {
             Path path = filePaths.get(i);
             try {
-                FileCopyUtils.copy(path.toFile(), targetDirectory.toFile());
+                Files.copy(path, targetDirectory);
             }
             catch (IOException exception) {
-                LOG.info("Error copying file {}: {}", path, exception.getCause().getMessage());
+                LOG.info("Error copying file {}: {}", path, exception.getMessage());
                 mainView.log("Error copying file " + path + ": " + "Error copying file " + path + ": " + exception.getMessage());
-                StringWriter stringWriter = new StringWriter();
-                exception.getCause().printStackTrace(new PrintWriter(stringWriter));
-                mainView.log(stringWriter.toString());
+                Throwable cause = exception.getCause();
+                if (cause != null) {
+                    StringWriter stringWriter = new StringWriter();
+                    cause.printStackTrace(new PrintWriter(stringWriter));
+                    mainView.log(stringWriter.toString());
+                }
             }
 
             mainView.updateProgress((1.0 * i / filePaths.size()) / totalTracks);
