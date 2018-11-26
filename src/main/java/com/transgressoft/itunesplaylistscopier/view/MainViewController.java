@@ -109,6 +109,10 @@ public class MainViewController {
         copyButton.setOnAction(e -> {
             if (copyButton.getText().equals("Copy")) {
                 itunesService.copyItunesPlaylists(targetPlaylists.getItems(), targetDirectoryFile);
+                addAllButton.setDisable(false);
+                addSelectedButton.setDisable(false);
+                removeAllButton.setDisable(false);
+                removeSelectedButton.setDisable(false);
                 copyButton.setText("Cancel");
             } else {
                 itunesService.cancelImport();
@@ -189,11 +193,19 @@ public class MainViewController {
     }
 
     public void log(String message) {
-        logTextArea.appendText(message);
+        logTextArea.appendText("\n" + message);
     }
 
     public void setItunesPlaylists(List<ItunesPlaylist> itunesPlaylists) {
         sourcePlaylists.setItems(FXCollections.observableArrayList(itunesPlaylists));
         progressBar.setProgress(0);
+    }
+
+    public void setCopyCompleted() {
+        copyButton.setText("Copy");
+        addAllButton.setDisable(false);
+        addSelectedButton.setDisable(false);
+        removeAllButton.setDisable(false);
+        removeSelectedButton.setDisable(false);
     }
 }

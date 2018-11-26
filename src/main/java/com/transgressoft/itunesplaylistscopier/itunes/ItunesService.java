@@ -99,23 +99,26 @@ public class ItunesService {
 
 
     public void copyItunesPlaylists(List<ItunesPlaylist> playlistsToCopy, File targetDestination) {
-        Map<String, List<Path>> trackPathsByPlaylistName = trackPathsByPlaylistName(playlistsToCopy);
+        CompletableFuture.runAsync(() -> {
+             Map<String, List<Path>> trackPathsByPlaylistName = trackPathsByPlaylistName(playlistsToCopy);
 
-        int totalTracks = trackPathsByPlaylistName.values().stream().mapToInt(List::size).sum();
+             int totalTracks = trackPathsByPlaylistName.values().stream().mapToInt(List::size).sum();
 
-        int count = 0;
-        for (Map.Entry<String, List<Path>> entry : trackPathsByPlaylistName.entrySet()) {
-            String playlistName = entry.getKey();
-            List<Path> itunesFilePaths = entry.getValue();
-            Path playlistPath = targetDestination.toPath().resolve(playlistName);
-            if (! playlistPath.toFile().mkdir()) {
-                count += entry.getValue().size();
-                mainView.log("Unable to create directory " + playlistPath.toString());
-            }
-            else
-                count = copyItunesTracks(itunesFilePaths, playlistPath, count, totalTracks);
+             int count = 0;
+             for (Map.Entry<String, List<Path>> entry : trackPathsByPlaylistName.entrySet()) {
+                 String playlistName = entry.getKey();
+                 List<Path> itunesFilePaths = entry.getValue();
+                 Path playlistPath = targetDestination.toPath().resolve(playlistName);
+                 if (! playlistPath.toFile().mkdir()) {
+                     count += entry.getValue().size();
+                     mainView.log("Unable to create directory " + playlistPath.toString());
+                 } else
+                     count = copyItunesTracks(itunesFilePaths, playlistPath, count, totalTracks);
 
-        }
+             }
+             mainVIew.log("Finished!");
+             mainView.setCopyCompleted();
+         });
     }
 
     private Map<String, List<Path>> trackPathsByPlaylistName(List<ItunesPlaylist> playlists) {
@@ -128,18 +131,22 @@ public class ItunesService {
         for (int i = 0; i < filePaths.size(); i++) {
             Path path = filePaths.get(i);
             try {
-                String ensuredFileName = ensuredFileNameOnPath(targetDirectory, path.toFile().getName());
-                Files.copy(path, targetDirectory.resolve(ensuredFileName), COPY_ATTRIBUTES);
-                LOG.info("File copied: {}", path);
-                mainView.log("File copied: " + path.toFile().getName());
-
+                if (targetDirectory.resolve(path.getFileName()).toFile().exists()) {
+                    LOG.info("File already exists: {}", targetDirectory.resolve(path.getFileName()));
+                }
+                else {
+                    String ensuredFileName = ensuredFileNameOnPath(targetDirectory, path.getFileName().toString());
+                    Files.copy(path, targetDirectory.resolve(ensuredFileName), COPY_ATTRIBUTES);
+                    LOG.info("File copied: {}", path);
+                    mainView.log("File copied: " + path.toFile().getName());
+                }
             }
             catch (IOException exception) {
                 LOG.info("Error copying file {}", path.toFile().getName());
                 mainView.log("Error copying file " + path.toFile().getName());
             }
 
-            mainView.updateProgress((1.0 * count++) / totalTracks);
+            mainView.updateProgress((1.0 * ++count) / totalTracks);
         }
         return count;
     }

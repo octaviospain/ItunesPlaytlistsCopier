@@ -36,10 +36,14 @@ public class MainView extends AbstractFxmlView {
     }
 
     public void log(String message) {
-        ((MainViewController) getPresenter()).log(message);
+        Platform.runLater(() -> ((MainViewController) getPresenter()).log(message));
     }
 
     public void setItunesPlaylists(List<ItunesPlaylist> itunesPlaylists) {
         Platform.runLater(() -> ((MainViewController) getPresenter()).setItunesPlaylists(itunesPlaylists));
+    }
+
+    public void setCopyCompleted() {
+        Platform.runLater(() -> ((MainViewController) getPresenter()).setCopyCompleted());
     }
 }
