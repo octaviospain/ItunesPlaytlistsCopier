@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="rootBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../css/main-view.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.transgressoft.itunesplaylistsutility.view.MainViewController">
+  <center>
+    <HBox alignment="CENTER" prefHeight="250.0" BorderPane.alignment="CENTER">
+      <BorderPane.margin>
+        <Insets left="20.0" right="20.0" />
+      </BorderPane.margin>
+      <children>
+        <VBox alignment="CENTER" HBox.hgrow="SOMETIMES">
+          <children>
+            <Label text="iTunes playlists">
+              <VBox.margin>
+                <Insets bottom="10.0" />
+              </VBox.margin>
+            </Label>
+            <ListView fx:id="sourcePlaylists" VBox.vgrow="SOMETIMES" />
+          </children>
+        </VBox>
+        <VBox alignment="CENTER" fillWidth="false" HBox.hgrow="NEVER">
+          <children>
+            <Button fx:id="addAllButton" mnemonicParsing="false" style="-fx-font-size: 12px;" text="&gt;&gt;" />
+            <Button fx:id="addSelectedButton" mnemonicParsing="false" style="-fx-font-size: 12px;" text="&gt;">
+              <VBox.margin>
+                <Insets bottom="5.0" top="10.0" />
+              </VBox.margin>
+            </Button>
+            <Button fx:id="removeSelectedButton" mnemonicParsing="false" style="-fx-font-size: 12px;" text="&lt;">
+              <VBox.margin>
+                <Insets bottom="10.0" top="5.0" />
+              </VBox.margin>
+            </Button>
+            <Button fx:id="removeAllButton" mnemonicParsing="false" style="-fx-font-size: 12px;" text="&lt;&lt;" />
+          </children>
+          <HBox.margin>
+            <Insets left="20.0" right="20.0" />
+          </HBox.margin>
+        </VBox>
+        <VBox alignment="CENTER" HBox.hgrow="SOMETIMES">
+          <children>
+            <Label text="Playlists to export">
+              <VBox.margin>
+                <Insets bottom="10.0" />
+              </VBox.margin>
+            </Label>
+            <ListView fx:id="targetPlaylists" VBox.vgrow="SOMETIMES" />
+          </children>
+        </VBox>
+      </children>
+    </HBox>
+  </center>
+  <bottom>
+      <BorderPane fx:id="bottomSectionBorderPane" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </BorderPane.margin>
+          <top>
+              <HBox alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
+                  <children>
+                      <ToggleButton fx:id="showLogToggleButton" mnemonicParsing="false">
+                          <HBox.margin>
+                              <Insets left="-7.0" />
+                          </HBox.margin>
+                      </ToggleButton>
+                      <Hyperlink fx:id="showLogHyperlink" text="Show log" />
+                  </children>
+                  <BorderPane.margin>
+                      <Insets bottom="10.0" />
+                  </BorderPane.margin>
+              </HBox>
+          </top>
+          <center>
+              <TextArea fx:id="logTextArea" prefHeight="120.0" BorderPane.alignment="CENTER">
+                  <BorderPane.margin>
+                      <Insets bottom="20.0" />
+                  </BorderPane.margin>
+              </TextArea>
+          </center>
+          <bottom>
+              <Button fx:id="closeButton" cancelButton="true" mnemonicParsing="false" prefWidth="100.0" text="Close" BorderPane.alignment="CENTER_RIGHT" />
+          </bottom>
+      </BorderPane>
+  </bottom>
+   <top>
+      <BorderPane BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
+         </BorderPane.margin>
+         <top>
+            <VBox BorderPane.alignment="CENTER">
+               <children>
+                  <HBox alignment="CENTER_LEFT">
+                     <children>
+                         <Button fx:id="chooseFileButton" mnemonicParsing="false" prefWidth="155.0" text="Select Itunes Library" />
+                        <Label fx:id="filePathLabel" HBox.hgrow="SOMETIMES">
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="20.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT">
+                     <children>
+                         <Button fx:id="selectTargetDirectoryButton" disable="true" mnemonicParsing="false" prefWidth="155.0" text="Select destination" />
+                        <Label fx:id="targetPathLabel" HBox.hgrow="SOMETIMES">
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="10.0" />
+               </BorderPane.margin>
+            </VBox>
+         </top>
+         <center>
+        <Button fx:id="copyButton" disable="true" mnemonicParsing="false" prefWidth="100.0" text="Copy" BorderPane.alignment="CENTER" />
+         </center>
+         <bottom>
+             <AnchorPane BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets top="10.0" />
+               </BorderPane.margin>
+                 <children>
+                     <ProgressBar fx:id="progressBar" prefHeight="20.0" prefWidth="630.0" stylesheets="@../css/main-view.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                 </children>
+             </AnchorPane>
+         </bottom>
+      </BorderPane>
+   </top>
+</BorderPane>

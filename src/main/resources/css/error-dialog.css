@@ -1,0 +1,17 @@
+#errorTitle {
+    -fx-font-size: 17px;
+}
+
+#seeDetailsToggleButton {
+    -fx-graphic: url('../icons/double-arrow-down.png');
+    -fx-background-color: transparent;
+}
+
+#seeDetailsToggleButton:selected {
+    -fx-graphic: url('../icons/double-arrow-up.png');
+    -fx-background-color: transparent;
+}
+
+.hyperlink {
+    -fx-font-size: 15px;
+}

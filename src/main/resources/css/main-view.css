@@ -1,0 +1,21 @@
+.progress-bar .bar {
+    -fx-background-color: rgb(99, 255, 109);
+    -fx-background-insets: 7 1 2 7;
+    -fx-background-radius: 10;
+}
+
+.progress-bar .track {
+    -fx-background-color: rgb(210, 209, 205);
+    -fx-background-insets: 7 1 2 7;
+    -fx-background-radius: 10;
+}
+
+#showLogToggleButton {
+    -fx-graphic: url('../icons/double-arrow-down.png');
+    -fx-background-color: transparent;
+}
+
+#showLogToggleButton:selected {
+    -fx-graphic: url('../icons/double-arrow-up.png');
+    -fx-background-color: transparent;
+}

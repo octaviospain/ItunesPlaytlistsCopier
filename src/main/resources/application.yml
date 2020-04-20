@@ -1,0 +1,6 @@
+javafx:
+  title: Itunes Playlists Utility
+
+spring:
+  main:
+    banner-mode: "off"

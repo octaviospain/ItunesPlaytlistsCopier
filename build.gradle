@@ -1,0 +1,78 @@
+apply plugin: 'java'
+apply plugin: 'net.ltgt.errorprone'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'javafx-gradle-plugin'
+
+group = 'com.transgressoft.itunesplaylistsutility'
+version = '0.1'
+
+description = 'Tool to copy iTunes playlists to a file location'
+
+sourceCompatibility = 8
+targetCompatibility = 8
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+bootRun {
+    main = 'com.transgressoft.itunesplaylistsutility.ItunesPlaylistsUtilityApplication'
+}
+
+test {
+    useJUnitPlatform {
+        includeEngines 'junit-jupiter'
+    }
+
+    failFast = false
+}
+
+repositories {
+    flatDir { dirs 'lib'}
+    maven { url 'https://jitpack.io' }
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile 'com.worldsworstsoftware:itunesutilities:1.2'
+    compile group: 'com.transgressoft', name: 'transgressoft-commons', version: '1.1'
+    compile group: 'com.google.guava', name: 'guava', version: '27.0-jre'
+    compile group: 'org.slf4j', name: 'slf4j-jdk14', version: '1.8.0-beta0'
+    compile group: 'org.slf4j', name: 'jcl-over-slf4j', version: '1.8.0-beta0'
+    compile group: 'de.roskenet', name: 'springboot-javafx-support', version: '2.1.7-SNAPSHOT'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter'
+    testCompile('org.springframework.boot:spring-boot-starter-test') {
+        exclude module: 'junit'
+    }
+    testCompile group: 'org.testfx', name: 'testfx-junit5', version: '4.0.8-alpha'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '2.12.0'
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api'
+    testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine'
+}
+
+buildscript {
+    ext {
+        springBootVersion = '2.0.5.RELEASE'
+    }
+    repositories {
+        flatDir { dirs 'lib'}
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "net.ltgt.gradle:gradle-errorprone-plugin:0.0.13"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath 'de.dynamicfiles.projects.gradle.plugins:javafx-gradle-plugin:8.8.2'
+    }
+}
+
+jfx {
+    mainClass = 'com.transgressoft.itunesplaylistsutility.ItunesPlaylistsUtilityApplication'
+    vendor = 'Transgressoft'
+    nativeReleaseVersion = '0.1'
+    appName = "Itunes Playlists Utility"
+    css2bin = true
+}
